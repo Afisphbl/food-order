@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CartProvider from "./store/CartProvider";
 import Header from "./components/Header";
 import Meal from "./components/Meal";
 import Cart from "./components/Cart";
@@ -15,13 +16,13 @@ function App() {
   };
 
   return (
-    <div>
+    <CartProvider>
       <Header onShowCart={showCartHandler} />
       <main>
         <Meal />
         {cartIsVisible && <Cart onHideCart={hideCartHandler} />}
       </main>
-    </div>
+    </CartProvider>
   );
 }
 
