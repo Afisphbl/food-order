@@ -38,6 +38,7 @@ export default function AvailableMeals({ children }) {
           {DUMMY_MEALS.map((meal) => (
             <MealItem
               key={meal.id}
+              id={meal.id}
               title={meal.name}
               description={meal.description}
               price={meal.price}
