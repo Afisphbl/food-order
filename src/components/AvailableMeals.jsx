@@ -5,11 +5,19 @@ import "../styles/meals/AvailableMeals.css";
 
 export default function AvailableMeals({ children }) {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoding] = useState(false);
+  const [httpError, setHttpError] = useState();
+
   useEffect(() => {
     const fetchMeals = async () => {
+      setIsLoding(true);
       const response = await fetch(
         "https://food-order-bb658-default-rtdb.firebaseio.com/meals.json",
       );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
       const responseData = await response.json();
       console.log(responseData);
 
@@ -24,10 +32,31 @@ export default function AvailableMeals({ children }) {
       }
 
       setMeals(loadedMeals);
+      setIsLoding(false);
     };
 
-    fetchMeals();
+    fetchMeals().catch((error) => {
+      setIsLoding(false);
+      setHttpError(error.message);
+    });
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className="MealsLoading">
+        <p>Loading..</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className="MealsError">
+        <p>{httpError}</p>
+      </section>
+    );
+  }
+
   return (
     <section className="meals">
       <Card>
