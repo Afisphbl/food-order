@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CartContext from "../store/Cart-context";
 import CartItem from "./CartItem";
 import Modal from "./Modul";
 import Button from "./Button";
+import CheckOut from "./check-out";
 import styles from "../styles/cart/Cart.module.css";
 
 export default function Cart({ onHideCart }) {
+  const [isCheckout, setIsCheckout] = useState(false);
   const cartContext = useContext(CartContext);
   const cartItems = cartContext.items;
 
@@ -19,6 +21,14 @@ export default function Cart({ onHideCart }) {
 
   const cartItemAddHandler = (item) => {
     cartContext.addItem({ ...item, amount: 1 });
+  };
+
+  const orderHandler = () => {
+    setIsCheckout(true);
+  };
+
+  const onCancleHandler = () => {
+    setIsCheckout(false);
   };
   return (
     <Modal onClose={onHideCart}>
@@ -40,12 +50,19 @@ export default function Cart({ onHideCart }) {
           <span>Total Amount</span>
           <span>{totalAmount}</span>
         </div>
-        <div className={styles.actions}>
-          <Button className={styles["button--alt"]} onClick={onHideCart}>
-            Close
-          </Button>
-          {hasItems && <Button className={styles.button}>Order</Button>}
-        </div>
+        {isCheckout && <CheckOut onCancel={onCancleHandler} />}
+        {!isCheckout && (
+          <div className={styles.actions}>
+            <Button className={styles["button--alt"]} onClick={onHideCart}>
+              Close
+            </Button>
+            {hasItems && (
+              <Button className={styles.button} onClick={orderHandler}>
+                Order
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </Modal>
   );
