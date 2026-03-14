@@ -34,7 +34,7 @@ export default function Cart({ onHideCart }) {
     <Modal onClose={onHideCart}>
       <div className={styles.cart}>
         <h2>Your Cart</h2>
-        <ul className={styles.cartItems}>
+        <ul className={styles["cart-items"]}>
           {cartItems.map((item) => (
             <CartItem
               key={item.id}
