@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 const isEmpty = (value) => value.trim() === "";
 const isFiveChars = (value) => value.trim().length === 5;
 
-const CheckOut = ({ onCancel }) => {
+const CheckOut = ({ onCancel, onSubmit }) => {
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
     street: true,
@@ -44,6 +44,13 @@ const CheckOut = ({ onCancel }) => {
     if (!formIsValid) {
       return;
     }
+
+    onSubmit({
+      name: enteredName,
+      street: enteredStreet,
+      postal: enteredPostal,
+      city: enteredCity,
+    });
   };
   return (
     <form onSubmit={confirmHandler} className="form">
